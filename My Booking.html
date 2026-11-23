@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Bookings | Care Portal</title>
+  <link rel="stylesheet" href="My Booking.css" />
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="profile">
+        <div class="avatar">
+          <img src="chae.jpeg" alt="Patient profile" />
+        </div>
+        <div>
+          <h3>Patientzx</h3>
+          <p class="email">parejafranklourd@patients.com</p>
+        </div>
+        <button class="logout-btn" type="button">Log out</button>
+      </div>
+
+      <nav class="menu" aria-label="Main navigation">
+        <a href="web.html">Home</a>
+        <a href="#">All Doctors</a>
+        <a href="appointment.html">Scheduled Sessions</a>
+        <a href="My Booking.html" class="active">My Bookings</a>
+        <a href="#">Settings</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <a href="web.html" class="back-btn" aria-label="Back to dashboard">&larr; Back</a>
+        <div class="date">
+          <span>Today's Date</span>
+          <strong id="today-date"></strong>
+        </div>
+      </header>
+
+      <section class="bookings">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Appointment history</p>
+            <h1>My bookings</h1>
+          </div>
+          <span class="booking-count" id="booking-count">1 booking</span>
+        </div>
+
+        <div class="filter-bar">
+          <label for="booking-date">Filter by date</label>
+          <input type="date" id="booking-date" />
+          <button class="filter-btn" type="button">Apply filter</button>
+          <button class="clear-btn" type="button" hidden>Clear</button>
+        </div>
+
+        <article class="booking-card" data-date="2026-01-07">
+          <div class="appointment-number">
+            <span>Appointment</span>
+            <strong>#01</strong>
+          </div>
+
+          <div class="booking-main">
+            <div class="booking-status">Confirmed</div>
+            <h2>Test Session</h2>
+            <p class="doctor">Dr. Test Doctor</p>
+
+            <div class="booking-details">
+              <div>
+                <span>Date</span>
+                <strong>January 7, 2026</strong>
+              </div>
+              <div>
+                <span>Time</span>
+                <strong>1:00 PM</strong>
+              </div>
+              <div>
+                <span>Reference</span>
+                <strong>JW-372-9</strong>
+              </div>
+            </div>
+          </div>
+
+          <button class="cancel-btn" type="button">Cancel booking</button>
+        </article>
+
+        <p class="empty-state" id="empty-state" hidden>No bookings match this date.</p>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    document.getElementById("today-date").textContent =
+      new Date().toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+
+    const dateInput = document.getElementById("booking-date");
+    const filterButton = document.querySelector(".filter-btn");
+    const clearButton = document.querySelector(".clear-btn");
+    const cards = [...document.querySelectorAll(".booking-card")];
+    const emptyState = document.getElementById("empty-state");
+    const bookingCount = document.getElementById("booking-count");
+
+    function applyFilter() {
+      let visibleCount = 0;
+      cards.forEach((card) => {
+        const matches = !dateInput.value || card.dataset.date === dateInput.value;
+        card.hidden = !matches;
+        if (matches) visibleCount += 1;
+      });
+      clearButton.hidden = !dateInput.value;
+      bookingCount.textContent = `${visibleCount} ${visibleCount === 1 ? "booking" : "bookings"}`;
+      emptyState.hidden = visibleCount !== 0;
+    }
+
+    filterButton.addEventListener("click", applyFilter);
+    clearButton.addEventListener("click", () => {
+      dateInput.value = "";
+      applyFilter();
+    });
+
+    document.querySelectorAll(".cancel-btn").forEach((button) => {
+      button.addEventListener("click", () => {
+        const card = button.closest(".booking-card");
+        if (card.hidden) return;
+        card.classList.toggle("cancelled");
+        const cancelled = card.classList.contains("cancelled");
+        button.textContent = cancelled ? "Restore booking" : "Cancel booking";
+        card.querySelector(".booking-status").textContent = cancelled ? "Cancelled" : "Confirmed";
+      });
+    });
+  </script>
+</body>
+</html>

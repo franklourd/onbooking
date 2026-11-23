@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patient Dashboard | Care Portal</title>
+  <link rel="stylesheet" href="web.css" />
+</head>
+<body>
+  <div class="dashboard">
+    <aside class="sidebar">
+      <div class="profile">
+        <div class="avatar">
+          <img src="chae.jpeg" alt="Patient profile" />
+        </div>
+        <div class="info">
+          <p class="name">Patientzx</p>
+          <p class="email">franklourdpareja@patients.com</p>
+        </div>
+        <button class="logout" type="button">Log out</button>
+      </div>
+      <nav aria-label="Main navigation">
+        <a href="web.html" class="active">Home</a>
+        <a href="#">All Doctors</a>
+        <a href="appointment.html">Scheduled Sessions</a>
+        <a href="My Booking.html">My Bookings</a>
+        <a href="#">Settings</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <header class="topbar">
+        <div>
+          <span>Today's Date</span>
+          <strong id="today-date"></strong>
+        </div>
+      </header>
+
+      <section class="welcome">
+        <div class="welcome-copy">
+          <p class="eyebrow">Patient overview</p>
+          <h1>Good <span id="day-period">morning</span>, Patient.</h1>
+          <p>Find a doctor and choose an appointment that works for you.</p>
+        </div>
+        <form class="search-form" role="search">
+          <label class="sr-only" for="doctor-search">Search doctors or sessions</label>
+          <input id="doctor-search" type="search" placeholder="Search doctors or sessions" autocomplete="off" />
+          <button type="submit">Search</button>
+        </form>
+      </section>
+
+      <section class="status-section" aria-label="Dashboard summary">
+        <article class="status-card">
+          <div class="status-icon" aria-hidden="true">DR</div>
+          <div><strong>4</strong><span>Available doctors</span></div>
+        </article>
+        <article class="status-card">
+          <div class="status-icon" aria-hidden="true">PT</div>
+          <div><strong>1</strong><span>Patient profile</span></div>
+        </article>
+        <article class="status-card">
+          <div class="status-icon" aria-hidden="true">BK</div>
+          <div><strong>1</strong><span>Active booking</span></div>
+        </article>
+        <article class="status-card">
+          <div class="status-icon" aria-hidden="true">TD</div>
+          <div><strong>0</strong><span>Sessions today</span></div>
+        </article>
+      </section>
+
+      <section class="booking">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Next visit</p>
+            <h2>Your upcoming booking</h2>
+          </div>
+          <a href="My Booking.html">View all</a>
+        </div>
+
+        <div class="booking-card">
+          <div class="appointment-number">
+            <span>Appointment</span>
+            <strong>#01</strong>
+          </div>
+          <div class="booking-info">
+            <p class="session-name">Test Session</p>
+            <span>Dr. Test Doctor</span>
+          </div>
+          <div class="booking-time">
+            <span>January 7, 2026</span>
+            <strong>1:00 PM</strong>
+          </div>
+          <a class="details-btn" href="My Booking.html">View details</a>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const now = new Date();
+    document.getElementById("today-date").textContent =
+      now.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+
+    const hour = now.getHours();
+    document.getElementById("day-period").textContent =
+      hour < 12 ? "morning" : hour < 18 ? "afternoon" : "evening";
+
+    document.querySelector(".search-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      window.location.href = "appointment.html";
+    });
+  </script>
+</body>
+</html>

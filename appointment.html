@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Scheduled Sessions | Patient Portal</title>
+  <link rel="stylesheet" href="appointment.css" />
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="profile">
+        <div class="avatar"><img src="chae.jpeg" alt="Patient profile"></div>
+        <h3>Patientzx</h3>
+        <p class="email">franklourdpareja@patients.com</p>
+        <button class="logout-btn" type="button">Log out</button>
+      </div>
+      <nav class="menu" aria-label="Main navigation">
+        <a href="web.html">Home</a>
+        <a href="#">All Doctors</a>
+        <a href="appointment.html" class="active">Scheduled Sessions</a>
+        <a href="My Booking.html">My Bookings</a>
+        <a href="#">Settings</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <a href="web.html" class="back-btn" aria-label="Back to home">&larr; Back</a>
+        <form class="search-form" role="search">
+          <label class="sr-only" for="session-search">Search sessions</label>
+          <input id="session-search" type="search" placeholder="Search doctor or session" autocomplete="off" />
+          <button class="search-btn" type="submit">Search</button>
+        </form>
+        <div class="date">
+          <span>Today's Date</span>
+          <strong id="today-date"></strong>
+        </div>
+      </header>
+
+      <section class="session-list">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Available appointments</p>
+            <h2>Scheduled Sessions</h2>
+          </div>
+          <span class="session-count" id="session-count">1 session</span>
+        </div>
+
+        <article class="session-card" data-session="test session doctor">
+          <div class="session-main">
+            <div class="doctor-avatar" aria-hidden="true">DR</div>
+            <div>
+              <p class="doctor-name">Dr. Test Doctor</p>
+              <h3 class="session-title">Test Session</h3>
+            </div>
+          </div>
+          <div class="session-details">
+            <div class="detail">
+              <span>Date</span>
+              <strong>January 7, 2026</strong>
+            </div>
+            <div class="detail">
+              <span>Time</span>
+              <strong>1:00 PM</strong>
+            </div>
+            <div class="detail">
+              <span>Duration</span>
+              <strong>30 minutes</strong>
+            </div>
+          </div>
+          <button class="book-btn" type="button">Book appointment</button>
+        </article>
+
+        <p class="empty-state" id="empty-state" hidden>No sessions match your search.</p>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const today = new Date();
+    document.getElementById("today-date").textContent =
+      today.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+
+    const searchForm = document.querySelector(".search-form");
+    const searchInput = document.getElementById("session-search");
+    const cards = [...document.querySelectorAll(".session-card")];
+    const emptyState = document.getElementById("empty-state");
+    const sessionCount = document.getElementById("session-count");
+
+    function filterSessions() {
+      const query = searchInput.value.trim().toLowerCase();
+      let visibleCount = 0;
+
+      cards.forEach((card) => {
+        const matches = card.dataset.session.includes(query);
+        card.hidden = !matches;
+        if (matches) visibleCount += 1;
+      });
+
+      sessionCount.textContent = `${visibleCount} ${visibleCount === 1 ? "session" : "sessions"}`;
+      emptyState.hidden = visibleCount !== 0;
+    }
+
+    searchForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      filterSessions();
+    });
+
+    searchInput.addEventListener("search", filterSessions);
+    searchInput.addEventListener("input", filterSessions);
+
+    document.querySelectorAll(".book-btn").forEach((button) => {
+      button.addEventListener("click", () => {
+        button.textContent = "Appointment booked";
+        button.classList.add("booked");
+        button.disabled = true;
+      });
+    });
+  </script>
+</body>
+</html>
